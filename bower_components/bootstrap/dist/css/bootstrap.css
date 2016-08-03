@@ -1148,6 +1148,13 @@ img {
 .img-circle {
   border-radius: 50%;
 }
+
+/*Añadido
+.img-max-responsive{
+  max-width: 150px;
+}
+*/
+
 hr {
   margin-top: 20px;
   margin-bottom: 20px;

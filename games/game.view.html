@@ -1,0 +1,67 @@
+<div class="col-md-12" ng-init="getGame()">
+	<div class="panel panel-primary">
+		<div class="panel-heading"><h1>{{game.gameName}}</h1></div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="container-fluid col-md-12">
+					<div class="container-fluid col-md-10">
+						<h4>Descripción</h4>
+						{{game.description}}
+					</div>
+					<div class="container-fluid col-md-2">
+						<ul class="list-unstyled">
+							<li>
+								<img ng-src="../img/games/{{game.gameIMG}}" alt="{{game.gameName}}"/>
+							</li>
+							<li>
+								<strong>Desarrollador:</strong> <a href="">{{game.developer}}</a>
+							</li>
+							<li>
+								<strong>Géneros: </strong>
+								<a ng-repeat="genre in game.genres">
+									{{genre}}
+								</a>
+							</li>
+							<li>
+								<strong>Subgéneros: </strong>
+								<span ng-repeat="subgenre in game.subgenres">
+									{{subgenre}}{{$last ? '' : ', '}}
+								</span>
+							</li>
+							<li>
+								<strong>Plataformas: </strong>
+								<a ng-repeat="platform in game.platforms">
+									{{platform}}
+								</a>
+							</li>
+							<li>
+								<strong>Lanzamiento: </strong>
+								<span>
+									{{game.release}} 
+								</span>
+							</li>
+							<li>
+								<strong>Voces: </strong>
+								<span ng-repeat="voice in game.voices">
+									{{voice}} {{$last ? '' : ', '}}
+								</span>
+							</li>
+							<li>
+								<strong>Textos: </strong>
+								<span ng-repeat="text in game.texts">
+									{{text}} {{$last ? '' : ', '}}
+								</span>
+							</li>
+							<li>
+								<button class="btn btn-block btn-default" ng-model="notPlayed" ng-class="{'active' : notPlayed}" ng-click="setChoice('notPlayed')">No jugado</button>
+								<button class="btn btn-block" ng-model="playing" ng-class="{'btn-warning active' : playing, 'btn-default' : !playing}" ng-click="setChoice('playing')">Jugando</button>
+								<button class="btn btn-block" ng-model="finished" ng-class="{'btn-success active' : finished, 'btn-default': !finished}" ng-click="setChoice('finished')">Terminado</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer"></div>
+	</div>
+</div>

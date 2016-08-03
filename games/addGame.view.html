@@ -1,0 +1,47 @@
+<div class="col-md-12">
+	<div class="panel panel-primary">
+		<div class="panel-heading"><h1>Añadir juego</h1></div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="container-fluid">
+					<form role="form" name="addGameForm">
+						<fieldset>
+							<div class="form-group">
+								<label for="gameUrl">Introduce la dirección</label>
+								<input class="form-control" placeholder="url" name="gameUrl" type="text" autofocus ng-model="game.gameUrl" required>
+							</div>
+							<input type="submit" value="Añadir" ng-click="addGame()" class="btn btn-primary" ng-disabled="addGameForm.$invalid">
+						</fieldset>
+					</form>
+					<div class="well col-md-8 col-md-offset-2" ng-show="addGameForm.$submitted">
+						<span ng-class="{'text-danger': errors, 'text-success': !errors }">{{message}}</span>
+					</div>
+				</div>
+				<div class="container-fluid">
+					<h3>Instrucciones:</h3>
+					<p>Para añadir un juego simplemente tienes que copiar el enlace a la ficha del juego correspondiente de <a href="wwww.meristation.com">meristation</a>. Si no se encuentra en nuestras bases de datos se añadirá. Ten en cuenta que esta operación puede tardar varios minutos, para asi evitar abusos.<br>
+					Un ejemplo de dirección válida sería:<br>
+					<strong>http://www.meristation.com/playstation-4/metal-gear-solid-v-the-phantom-pain/juego/1873482</strong></p>
+					<img src="../img/urlExample.jpg" alt="Ejemplo de enlace">
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer"></div>
+	</div>
+</div>
+
+
+<!--form role="form" name="addGame">
+	<fieldset>
+		<div class="form-group">
+			<label for="gameUrl">Introduce la dirección</label>
+			<input class="form-control" placeholder="url" name="gameUrl" type="text" autofocus ng-model="game.gameUrl" required>
+		</div>
+		<input type="submit" value="Añadir" ng-click="addGame()" class="btn btn-primary" ng-disabled="addGame.$invalid">
+	</fieldset>
+</form>
+<div class="well col-md-8 col-md-offset-2" ng-show="addGame.$submitted">
+	Mensaje {{message}}
+	<span ng-class="{'text-danger': errors, 'text-success': !errors }">{{message}}</span>
+	<span class="text-success" ng-show="!errors">{{message}}</span>
+</div -->

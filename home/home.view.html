@@ -1,34 +1,39 @@
-<div class=".col-md-12">
+<div class="col-md-12" ng-init="">
 	<div class="panel panel-primary">
 		<div class="panel-heading"><h1>Principal</h1></div>
 		<div class="panel-body">
-			<div class="row">
+			<div class="row" ng-controller="gameController" ng-init="getGamesByList('playing', 0)">
 				<div class="panel-heading"><h2>Juegos pendientes</h2></div>
-				<hr>
-				<ul>
-					<li ng-repeat="game in pendingGames">
-						<!--a href="games/game{{game.id}}"><img src="{{game.img}}"></a-->
+				<div class="container-fluid col-md-12" ng-show="!games.length"><h1>Actualmente no tienes ningún juego pendiente.</h1></div>
+				<ul ng-show="games.length">
+					<li class="list-unstyled" ng-repeat="game in games">
+						<div class="container-fluid col-md-2">
+							<a href="#/game/{{ game.gameID }}">
+								<img class="img-rounded img-responsive" ng-src="../img/games/{{game.gameIMG}}" alt="{{game.gameName}}"/>
+								<span>{{game.gameName}}</span>
+							</a>
+						</div>
 					</li>
 				</ul>
-				<span>{{gamesState}}</span>
 			</div>
-			<div class="row">
-				<div class="panel-heading"><h2>{{prueba}}</h2></div>
-			</div>
-			<div class="row">
-				<div class="panel-heading"><h2>{{game.gameTitle}}</h2></div>
-			</div>
-			<div class="row">
+			<hr>
+			<div class="row" ng-controller="noticeController" ng-init="listNotices()">
 				<div class="panel-heading"><h2>Noticias</h2></div>
-				<hr>
-				<ul>
-					<li ng-repeat="notice in notices"> <!-- Repite el código entre el tag inicio y el fin -->
-						
-					</li>
-				</ul>
-				<span>{{noticeState}}</span>
+				<div class="container-fluid col-md-12" ng-show="!notices.length"><h1>Actualmente no hay ninguna noticia, ayudanos añadiendo una.</h1></div>
+				<div class="container-fluid col-md-12" ng-show="notices.length">
+					<ul>
+						<li class="list-unstyled" ng-repeat="notice in notices">
+							<div class="container-fluid col-md-3">
+								<a href="#/notice/{{ notice._id.$id }}">
+									<img class="img-rounded img-responsive" ng-src="../img/notices/{{notice.noticeIMG}}" alt="{{notice.title}}"/>
+									<span>{{notice.title}}</span>
+								</a>
+							</div>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
-		<div class="panel-footer"></div>
 	</div>
+	<div class="panel-footer"></div>
 </div>

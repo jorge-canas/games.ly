@@ -6,17 +6,18 @@
         $scope.message= "";
         $scope.userLogin = function(){
             $http.post("php/login.php", JSON.stringify($scope.user))
-                .success(function(data){
-                    console.log(data);
-                    if (!data['error']) {
+                .success(function(response){
+                    //console.log(response);
+                    if (!response['error']) {
                         window.location.href ="main/main.php";
                     }else{
-                        $scope.errors = data['error'];
-                        $scope.message = data['message'];
+                        $scope.errors = response['error'];
+                        $scope.message = response['message'];
                     }                
                 })
                 .error(function(error){
-                    $scope.errors = "Hay un problema: " + error;
+                    $scope.errors = true;
+                    $scope.message = "Hay un problema: " + error;
                 })
-            }
+        }
     }

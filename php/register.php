@@ -1,12 +1,25 @@
 <?php
 
+	require_once("connMongoDB.php");
+	require_once("entities.php");
+	include_once('functions.php');
+	addLogLine('Accede a registro', 'Desconocido');
+	
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)){
 		$params = json_decode(file_get_contents('php://input'),true);
 		//var_dump($params);
 		//var_dump($_POST);
 		$error = false;
 		$message = "";
-
+		/*
+		$params = array(
+			"username" => "pepapig",
+			"password1" => "pass",
+			"password2" => "pass",
+			"email1" => "prueba@prueba.es",
+			"email2" => "prueba@prueba.es"
+			);
+		*/
 		//validación
 		if (empty($params['username']) || 
 			empty($params['password1']) ||
@@ -15,55 +28,63 @@
 			empty($params['email2'])
 			) {
 				$error = true;
-				$message = "No se ha cumplido con los requisitos del formulario, compruebeló y rellene los campos vacíos"				;
+				$message = "No se ha cumplido con los requisitos del formulario, compruebeló y rellene los campos vacíos";
 		}
-		if (!$error) {
-			$insert = array(
-				"username" => $params['username'],
-				"password" => password_hash($params['password1'], PASSWORD_BCRYPT),
-				"email" => $params['email1'],
-				"role" => 0);
 
-			require_once("connMongoDB.php");
-			try{
+		if (strcmp($params['password1'], $params['password2'])!=0) {
+			$error = true;
+			$message = "La contraseña no coincide";
+		}
+
+		if (strcmp($params['email1'], $params['email2'])!=0) {
+			$error = true;
+			$message = "El correo no coincide";
+		}
+
+		if (!$error) {
+			$newUser = array(
+				"username" => $params['username'],
+				"password" => $params['password1'],
+				"email" => $params['email1']
+			);
+
+			$conn = new MongoConn();
+			$mongo = $conn->connect();
+			if ($mongo) {
 				//seleccionar base datos
-				$db = $mongo->gamesly;
+				$db = $mongo->selectDB("gamesly");
 
 				//selección de la colección
-				$collection = $db->selectCollection("users");
+				$collection = $db->selectCollection("User");
 
-				$username = $params['username'];
+				$user = new User($collection);
 
-				//Comprobar que el usuario no existe
-				$result = $collection->findOne(array('username' => $username));
-
-				if ($result['_id']) {
+				if(!$user->duplicateUsername($params['username'])){
+					if(!$user->duplicateEmail($params['email1'])){
+						$user->newUser($newUser);
+						$message = "El usuario se ha insertado correctamente";
+						addLogLine($params['username'].' se ha registrado');
+					}else{
+						$error = true;
+						$message = "El correo ya existe, por favor elija otro";
+						addLogLine('El correo '.$params['email1'].' ya existe ');
+					}
+				}else{
 					$error = true;
 					$message = "El usuario ya existe, por favor elija otro";
-				}else{
-					//insertar nuevo elemento
-					$result = $collection->insert($insert);
-					$mongo->close();
-					if ($result["ok"]) {
-						$message = "El usuario se ha registrado con éxito.";
-					}else{
-						$message = "Ha habido un problema y el usuario no se ha podido crear";
-					}
+					addLogLine('El usuario '.$params['username'].' ya existe ');
 				}
-			}catch(MongoException $e){
-				$result = array(
-					'error' => true,
-					'message' => $e->getMessage()
-				);
-				$result = json_encode($result);
-				echo $result;
+			}else{
+				$error = true;
+				$message = "Hay un problema con la base de datos";
 			}
 		}
-		
+		$mongo->close();
 		$result = array(
-					'error' => $error,
-					'message' => $message
-				);
+			'error' => $error,
+			'message' => $message
+		);
+
 		$result = json_encode($result);
 		echo $result;
 	}

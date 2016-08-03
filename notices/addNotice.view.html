@@ -1,0 +1,36 @@
+<div class="col-md-12">
+	<div class="panel panel-primary">
+		<div class="panel-heading"><h1>Añadir noticia</h1></div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="container-fluid">
+					<form role="form" name="addNoticeForm">
+						<fieldset>
+							<div class="form-group">
+								<label for="title">Título</label>
+								<input class="form-control" placeholder="Título" name="title" type="text" autofocus ng-model="notice.title" required>
+							</div>
+							<div class="form-group">
+								<label for="noticeIMG">Imagen opcional de la noticia</label>
+								<input class="form-control" placeholder="Imagen" name="noticeIMG" type="text" autofocus ng-model="notice.noticeIMG">
+							</div>
+							<div class="form-group">
+								<label for="noticeBody">Noticia</label>
+								<input class="form-control" placeholder="Texto de la noticia" name="noticeBody" type="text" autofocus ng-model="notice.noticeBody" required>
+							</div>
+							<div class="form-group">
+								<label for="source">Fuente</label>
+								<input class="form-control" placeholder="Fuente" name="source" type="text" autofocus ng-model="notice.source">
+							</div>
+							<input type="submit" value="Añadir" ng-click="addNotice()" class="btn btn-primary" ng-disabled="addNoticeForm.$invalid">
+						</fieldset>
+					</form>
+					<div class="well col-md-8 col-md-offset-2" ng-show="addNoticeForm.$submitted">
+						<span ng-class="{'text-danger': errors, 'text-success': !errors }">{{message}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer"></div>
+	</div>
+</div>

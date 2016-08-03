@@ -6,15 +6,15 @@
         $scope.message= "";
 		$scope.userRegister = function(){
             $http.post("php/register.php", JSON.stringify($scope.user))
-                .success(function(data){
-                    if (!data['error']){
+                .success(function(response){
+                    if (!response['error']){
                         //console.log("correcto");
-                        $scope.message = data["message"];
+                        $scope.message = response["message"];
                     }else{
                         //console.log("mal");
                         //console.log(data);
                         $scope.errors = true;
-                        $scope.message = data["message"];
+                        $scope.message = response["message"];
                     }
                 })
                 .error(function(error){

@@ -1,60 +1,69 @@
 <?php
+	
+	include_once('functions.php');
+	if ( is_session_started() === FALSE ) session_start();
+	addLogLine('Accede a login', 'Desconocido');
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)){
 		$params = json_decode(file_get_contents('php://input'),true);
 		$error = false;
 		$message = "";
-		
-		require_once("connMongoDB.php");
-		try{
-			//seleccionar base datos
-			$db = $mongo->gamesly;
 
-			//selección de la colección
-			$collection = $db->selectCollection("users");
+		if (empty($params['username']) || 
+			empty($params['password'])
+			){
+				$error = true;
+				$message = "Existen campos vacios";
+		}
 
-			//recojo los valores pasados por POST
-			$username = $params['username'];
-			$password = $params['password'];
-			
-			//Comprobar que el usuario no existe
-			$result = $collection->findOne(array('username' => $username), array('_id', 'username', 'password', 'role'));
-			$mongo->close();
-			if ($result['_id']) {
-				$colPass = $result['password'];
-				if (password_verify($password, $colPass)) {
-					include_once('functions.php');
-					if ( is_session_started() === FALSE ) session_start();
-					if ($result['role'] === 10) {
-						$_SESSION['adminId'] = $result['_id'];
+		if (!$error) {
+			require_once("connMongoDB.php");
+			require_once("entities.php");
+
+			$conn = new MongoConn();
+			$mongo = $conn->connect();
+			if ($mongo) {
+				//seleccionar base datos
+				$db = $mongo->selectDB("gamesly");
+
+				//selección de la colección
+				$collection = $db->selectCollection("User");
+
+				$user = new User($collection);
+
+				$iniciado = $user->initUser($params['username']);
+
+				if ($iniciado) {
+					if (password_verify($params['password'], $user->getPassword())) {
+						//usuario verificado
+						if ($user->getRole() === 10) {
+							$_SESSION['adminId'] = $user->getID();
+						}else{
+							$_SESSION['userId'] = $user->getID();
+						}
+						$_SESSION['username'] = $user->getUsername();
+						addLogLine('Accede a la página', $_SESSION['username']);
 					}else{
-						$_SESSION['userId'] = $result['_id'];
+						addLogLine('Password incorrecto');
+						$error = true;
+						$message = "El usuario o la contraseña son incorrectas";
 					}
-					$_SESSION['username'] = $result['username'];
 				}else{
+					addLogLine('El usuario no existe');
 					$error = true;
+					$message = "El usuario o la contraseña son incorrectas";
 				}
 			}else{
 				$error = true;
+				$message = "Hay un problema con la base de datos";
 			}
-
-			if ($error) {
-				$message = "El usuario o la contraseña es incorrecto";
-			}
-
-			$result = array(
-				'error' => $error,
-				'message' => $message
-				);
-			$result = json_encode($result);
-			echo $result;
-		}catch(MongoException $e){
-			$mongo->close();
-			$result = array(
-				'error' => true,
-				'message' => $e->getMessage()
-				);
-			$result = json_encode($result);
-			echo $result;
 		}
-	}    
+		
+		$result = array(
+			'error' => $error,
+			'message' => $message
+		);
+
+		$result = json_encode($result);
+		echo $result;
+	}
