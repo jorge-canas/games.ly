@@ -1,0 +1,34 @@
+<div class=".col-md-12">
+	<div class="panel panel-primary">
+		<div class="panel-heading"><h1>Principal</h1></div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="panel-heading"><h2>Juegos pendientes</h2></div>
+				<hr>
+				<ul>
+					<li ng-repeat="game in pendingGames">
+						<!--a href="games/game{{game.id}}"><img src="{{game.img}}"></a-->
+					</li>
+				</ul>
+				<span>{{gamesState}}</span>
+			</div>
+			<div class="row">
+				<div class="panel-heading"><h2>{{prueba}}</h2></div>
+			</div>
+			<div class="row">
+				<div class="panel-heading"><h2>{{game.gameTitle}}</h2></div>
+			</div>
+			<div class="row">
+				<div class="panel-heading"><h2>Noticias</h2></div>
+				<hr>
+				<ul>
+					<li ng-repeat="notice in notices"> <!-- Repite el código entre el tag inicio y el fin -->
+						
+					</li>
+				</ul>
+				<span>{{noticeState}}</span>
+			</div>
+		</div>
+		<div class="panel-footer"></div>
+	</div>
+</div>

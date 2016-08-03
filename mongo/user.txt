@@ -1,0 +1,20 @@
+use gamesly
+db.createUser(
+  {
+    user: "gameslyAdmin",
+    pwd: "pass",
+    roles: [ { role: "userAdmin", db: "gamesly" } ]
+  }
+)
+
+db.createUser(
+	{
+		user: "gameslyUser",
+		pwd: "pass",
+		roles: [
+			{
+				role: "readWrite", db: "gamesly"
+			}
+		]
+	}
+)
