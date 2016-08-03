@@ -24,10 +24,10 @@
 			$conn = new MongoConn();
 			$mongo = $conn->connect();
 			if ($mongo) {
-				//seleccionar base datos
+				//DB selection
 				$db = $mongo->selectDB("gamesly");
 
-				//selección de la colección
+				//Collection selection
 				$collection = $db->selectCollection("Notice");
 
 				$newNotice = new Notice($collection);
@@ -56,10 +56,10 @@
 				$newNotice->initNotice($notice);
 				$newNotice->save();
 
-				//Coger la foto
+				//Get image
 				if ($imageUrl) {
 					$content = file_get_contents($imageUrl);
-					//Almacenarla en el sistema
+					//Store it in the system
 					$fp = fopen("../img/notices/$noticeIMG", "w");
 					fwrite($fp, $content);
 					fclose($fp);

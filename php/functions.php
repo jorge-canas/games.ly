@@ -2,7 +2,7 @@
 /**
 * @return bool
 */
-//Comprueba si la sesión está iniciada
+//Session checker
 function is_session_started(){
     if ( php_sapi_name() !== 'cli' ) {
         if ( version_compare(phpversion(), '5.4.0', '>=') ) {

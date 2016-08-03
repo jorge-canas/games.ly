@@ -13,14 +13,14 @@
 
 		//var_dump($params);
 
-		//validación
+		//validation
 		if (empty($params['choice'])) {
 			$error = true;
 			$message = "No se ha elegido una opción.";
 		}
 
 		if (!$error) {
-			//verificación de la opción de cambio de password
+			//Check change password choice
 			if (strcmp($params['choice'], 'password')==0){
 				if(empty($params['oldPassword']) || 
 				empty($params['newPassword1'])
@@ -33,7 +33,7 @@
 				}
 			}
 
-			//verificación de la opción de cambio de email
+			//Check change email choice
 			if (strcmp($params['choice'], 'email')==0 ){
 				if(empty($params['oldEmail']) || 
 				empty($params['newEmail1'])
@@ -47,17 +47,14 @@
 				}
 			}
 
-			//opción de cambio de nombre de usuario
-			//rellenar
-
 			if (!$error) {
 				$conn = new MongoConn();
 				$mongo = $conn->connect();
 				if ($mongo) {
-					//seleccionar base datos
+					//DB selection
 					$db = $mongo->selectDB("gamesly");
 
-					//selección de la colección
+					//Collection selection
 					$collection = $db->selectCollection("User");
 
 					$user = new User($collection);
@@ -90,7 +87,6 @@
 							}
 						}
 
-						//opción para cambio de nombre de usuario						
 					}else{
 						$error = true;
 						$message = "El usuario o la contraseña son incorrectas";

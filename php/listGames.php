@@ -20,10 +20,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)){
 	$conn = new MongoConn();
 	$mongo = $conn->connect();
 	if ($mongo) {
-		//seleccionar base datos
+		//DB selection
 		$db = $mongo->selectDB("gamesly");
 
-		//selección de la colección
+		//Collection selection
 		$collection = $db->selectCollection("Game");
 
 		$game = new Game($collection);

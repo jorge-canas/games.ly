@@ -8,7 +8,7 @@
 	$message = "No tienes permisos para acceder a esta acción.";
 	$response = false;
 	
-	//Comprobar que quien hace la petición es administrador
+	//Admin request check
 	if ( is_session_started() === FALSE ) session_start();
 	addLogLine('Accede a borrar juego', null!==$_SESSION['username'] ? $_SESSION['username'] : 'Desconocido');
 	if($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST) && isset($_SESSION['adminId'])){
@@ -23,10 +23,10 @@
 			$conn = new MongoConn();
 			$mongo = $conn->connect();
 			if ($mongo) {
-				//seleccionar base datos
+				//DB selection
 				$db = $mongo->selectDB("gamesly");
 
-				//selección de la colección
+				//Collection selection
 				$collection = $db->selectCollection("Game");
 
 				$game = new game($collection);

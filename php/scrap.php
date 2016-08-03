@@ -23,10 +23,10 @@
 			$conn = new MongoConn();
 			$mongo = $conn->connect();
 			if ($mongo) {
-				//seleccionar base datos
+				//DB selection
 				$db = $mongo->selectDB("gamesly");
 
-				//selección de la colección
+				//Collection selection
 				$collection = $db->selectCollection("Game");
 
 				$newGame = new Game($collection);
@@ -35,7 +35,7 @@
 				$gameIDParts = explode("/", $params['gameUrl']);
 
 				if (isset($gameIDParts[2]) && strcmp($gameIDParts[2], "www.meristation.com")==0) {
-					//Identificador
+					//Id
 					$gameID = $gameIDParts[4]."-".$gameIDParts[6];
 
 					if (!$newGame->duplicateGame($gameID)) {
@@ -44,35 +44,35 @@
 						//$crawler = $client->request('GET', 'games.ly/php/pruebas/metal.html');
 						//var_dump($crawler);
 
-						//Nombre del juego
+						//Game name
 						if ($crawler->filter('h1.game-title')->count() > 0) {
 							$gameName = $crawler->filter('h1.game-title')->text();
 						}else{
 							$gameName = "Título vacío";
 						}					
 						
-						//Descripción
+						//Description
 						if ($crawler->filter('div.pane-game-tech-head > div > table > tbody > tr > td > p')->count() > 0) {
 							$description = $crawler->filter('div.pane-game-tech-head > div > table > tbody > tr > td > p')->text();
 						}else{
 							$description = "Sin descripción";
 						}
 
-						//Imágen
+						//Image
 						if ($crawler->filter('img.imagecache-gamebox')->count() > 0) {
 							$imageUrl = $crawler->filter('img.imagecache-gamebox')->attr('src');
 						}else{
 							$imageUrl = null;
 						}
 
-						//Desarrolladora
+						//Developer
 						if ($crawler->filter('.field-type-nodereference > div > div > a')->count() > 0) {
 							$developer = $crawler->filter('.field-type-nodereference > div > div > a')->html();
 						}else{
 							$developer = "Sin desarrolladora";
 						}					
 
-						//Géneros
+						//Genres
 						$genres = array();
 						if ($crawler->filter('.field-field-gender > div > div > a')->count() > 0) {
 							$crawler->filter('.field-field-gender > div > div > a')->each(function($genre){
@@ -80,7 +80,7 @@
 							});						
 						}
 
-						//Subgéneros
+						//Subgenres
 						$subgenres = array();
 						if ($crawler->filter('.field-field-subgender > div > div')->count() > 0) {
 							$sgDirty = $crawler->filter('.field-field-subgender > div > div')->text();
@@ -92,28 +92,28 @@
 							}
 						}					
 
-						//Lanzamiento
+						//Launch
 						if ($crawler->filter('div.field-type-datestamp > div > div > span')->count() > 0) {
 							$release = $crawler->filter('div.field-type-datestamp > div > div > span')->html();
 						}else{
 							$release = "";
 						}
 
-						//Voces
+						//Voices
 						$voices = array();
 						if ($crawler->filter('.field-field-voices-language > div > div')->count() > 0) {
 							$voicesDirty = $crawler->filter('.field-field-voices-language > div > div')->text();
 							$voicesDirty = str_replace("Voces:", "", $voicesDirty);
 							
 							$voicesClean = explode(",", $voicesDirty);
-							//eliminar espacios en blanco y otros elementos
+							//Clean
 							$voicesClean = array_map('trim', $voicesClean);
 							foreach ($voicesClean as $voice) {
 								array_push($GLOBALS['voices'], trim($voice));
 							}
 						}
 
-						//Textos
+						//Texts
 						$texts = array();
 						if ($crawler->filter('.field-field-text-language > div > div')->count() > 0) {
 							$textsDirty = $crawler->filter('.field-field-text-language > div > div')->text();
@@ -125,7 +125,7 @@
 							}	
 						}
 
-						//Plataformas
+						//Platforms
 						$platforms = array();
 						if ($crawler->filter('.field-field-platform > div > div > a ')->count() > 0) {
 							array_push($platforms, $crawler->filter('.field-field-platform > div > div > a ')->text());
@@ -136,7 +136,6 @@
 							}
 						}
 						
-
 						if ($imageUrl) {
 							$gameIMG = $gameID.".png";
 						}else{
@@ -160,10 +159,10 @@
 						$newGame->setGame($game);
 						$newGame->save();
 
-						//Coger la foto
+						//Get the image
 						if ($imageUrl) {
 							$content = file_get_contents($imageUrl);
-							//Almacenarla en el sistema
+							//Store it
 							$fp = fopen("../img/games/$gameIMG", "w");
 							fwrite($fp, $content);
 							fclose($fp);

@@ -18,10 +18,10 @@
 			$conn = new MongoConn();
 			$mongo = $conn->connect();
 			if ($mongo) {
-				//seleccionar base datos
+				//DB selection
 				$db = $mongo->selectDB("gamesly");
 
-				//selección de la colección
+				//Collection selection
 				$userCollection = $db->selectCollection("User");
 
 				$user = new User($userCollection);

@@ -23,10 +23,10 @@
 			$conn = new MongoConn();
 			$mongo = $conn->connect();
 			if ($mongo) {
-				//seleccionar base datos
-				$db = $mongo->selectDB("gamesly");
+				//DB selection
+		$db = $mongo->selectDB("gamesly");
 
-				//selección de la colección
+		//Collection selection
 				$collection = $db->selectCollection("User");
 
 				$user = new User($collection);
@@ -35,7 +35,7 @@
 
 				if ($iniciado) {
 					if (password_verify($params['password'], $user->getPassword())) {
-						//usuario verificado
+						//User verified
 						if ($user->getRole() === 10) {
 							$_SESSION['adminId'] = $user->getID();
 						}else{
