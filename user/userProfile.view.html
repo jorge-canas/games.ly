@@ -1,0 +1,113 @@
+<div class="col-md-12">
+	<div class="panel panel-primary">
+		<div class="panel-heading"><h1>Perfil de usuario</h1></div>
+		<div class="panel-body">
+			<div class="row" ng-controller="gameController" ng-init="getGamesByList('playing', 0)">
+				<div class="panel-heading"><h2>Juegos pendientes</h2></div>
+				<div class="container-fluid col-md-12" ng-show="!games.length"><h1>Actualmente no tienes ningún juego pendiente.</h1></div>
+				<ul ng-show="games.length">
+					<li class="list-unstyled" ng-repeat="game in games">
+						<div class="container-fluid col-md-2">
+							<a href="#/game/{{ game.gameID }}">
+								<img class="img-rounded img-responsive" ng-src="../img/games/{{game.gameIMG}}" alt="{{game.gameName}}"/>
+								<span>{{game.gameName}}</span>
+							</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<hr>
+			<div class="row" ng-controller="gameController" ng-init="getGamesByList('finished', 0)">
+				<div class="panel-heading"><h2>Juegos finalizados</h2></div>
+				<div class="container-fluid col-md-12" ng-show="!games.length"><h1>Actualmente no tienes ningún juego finalizado.</h1></div>
+				<ul ng-show="games.length">
+					<li class="list-unstyled" ng-repeat="game in games">
+						<div class="container-fluid col-md-2">
+							<a href="#/game/{{ game.gameID }}">
+								<img class="img-rounded img-responsive" ng-src="../img/games/{{game.gameIMG}}" alt="{{game.gameName}}"/>
+								<span>{{game.gameName}}</span>
+							</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="container-fluid col-md-4 col-md-offset-4">
+					<form role="form" name="changePassword">
+						<fieldset>
+							<div class="panel-heading"><h2>Cambiar contraseña</h2></div>
+							<div class="form-group" ng-class="{'has-error': changePassword.oldPassword.$invalid, 'has-success': changePassword.oldPassword.$valid}">
+								<label for="oldPassword">Contraseña antigua</label>
+								<input class="form-control" placeholder="Contraseña antigua" name="oldPassword" type="password" value="" ng-model="user.oldPassword" ng-minlength="4" required>
+								<div ng-show="changePassword.oldPassword.$dirty && changePassword.oldPassword.$invalid">
+									<span class="help-block text-danger" ng-show="changePassword.oldPassword.$error.required">Campo obligatorio</span>
+									<span class="help-block text-danger" ng-show="changePassword.oldPassword.$error.minlength">Mínimo de 4 caracteres</span>
+								</div>
+							</div>
+							<div class="form-group" ng-class="{'has-error': changePassword.newPassword1.$invalid, 'has-success': changePassword.newPassword1.$valid}">
+								<label for="newPassword1">Contraseña nueva</label>
+								<input class="form-control" placeholder="Contraseña nueva" name="newPassword1" type="password" value="" ng-model="user.newPassword1" ng-minlength="4" required>
+								<div ng-show="changePassword.newPassword1.$dirty && changePassword.newPassword1.$invalid">
+									<span class="help-block text-danger" ng-show="changePassword.newPassword1.$error.required">Campo obligatorio</span>
+									<span class="help-block text-danger" ng-show="changePassword.newPassword1.$error.minlength">Mínimo de 4 caracteres</span>
+								</div>
+							</div>
+							<div class="form-group" ng-class="{'has-error': changePassword.newPassword2.$invalid, 'has-success': changePassword.newPassword2.$valid}">
+								<label for="newPassword2">Repetir contraseña nueva</label>
+								<input class="form-control" placeholder="Repetir contraseña nueva" name="newPassword2" type="password" value="" ng-model="user.newPassword2" ng-minlength="4" match="user.newPassword1" required>
+								<div ng-show="changePassword.newPassword2.$dirty && changePassword.newPassword2.$invalid && changePassword.newPassword2.$error.match">
+									<span class="help-block text-danger" ng-show="changePassword.newPassword2.$error.required">Campo obligatorio</span>
+									<span class="help-block text-danger" ng-show="changePassword.newPassword2.$error.match">Las contraseñas no coinciden</span>
+								</div>
+							</div>
+							<input type="submit" value="Cambiar contraseña" ng-click="changeMyPassword()" class="btn btn-lg btn-success btn-block" ng-disabled="changePassword.$invalid">
+						</fieldset>
+					</form>
+					<div class="well" ng-show="changePassword.$submitted">
+						<span ng-class="{'text-danger': errors, 'text-success': !errors }">{{message}}</span>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="container-fluid col-md-4 col-md-offset-4">
+					<form role="form" name="changeEmail">
+						<fieldset>
+							<div class="panel-heading"><h2>Cambiar correo</h2></div>
+							<div class="form-group" ng-class="{'has-error': changeEmail.oldEmail.$invalid, 'has-success': changeEmail.oldEmail.$valid}">
+								<label for="oldEmail">Correo antiguo</label>
+								<input class="form-control" placeholder="Correo antiguo" name="oldEmail" type="email" value="" ng-model="user.oldEmail" required>
+								<div ng-show="changeEmail.oldEmail.$dirty && changeEmail.oldEmail.$invalid">
+									<span class="help-block text-danger" ng-show="changeEmail.oldEmail.$error.required">Campo obligatorio</span>
+									<span class="help-block text-danger" ng-show="changeEmail.oldEmail.$error.email">Email invalido</span>
+								</div>
+							</div>
+							<div class="form-group" ng-class="{'has-error': changeEmail.newEmail1.$invalid, 'has-success': changeEmail.newEmail1.$valid}">
+								<label for="newEmail1">Correo nuevo</label>
+								<input class="form-control" placeholder="Correo nuevo" name="newEmail1" type="email" value="" ng-model="user.newEmail1" required>
+								<div ng-show="changeEmail.newEmail1.$dirty && changeEmail.newEmail1.$invalid">
+									<span class="help-block text-danger" ng-show="changeEmail.newEmail1.$error.required">Campo obligatorio</span>
+									<span class="help-block text-danger" ng-show="changeEmail.newEmail.$error.email">Email invalido</span>
+								</div>
+							</div>
+							<div class="form-group" ng-class="{'has-error': changeEmail.newEmail2.$invalid, 'has-success': changeEmail.newEmail2.$valid}">
+								<label for="newEmail2">Repetir correo nuevo</label>
+								<input class="form-control" placeholder="Correo nuevo" name="newEmail2" type="email" value="" ng-model="user.newEmail2" match="user.newEmail1" required>
+								<div ng-show="changeEmail.newEmail2.$dirty && changeEmail.newEmail2.$invalid">
+									<span class="help-block text-danger" ng-show="changeEmail.newEmail2.$error.required">Campo obligatorio</span>
+									<span class="help-block text-danger" ng-show="changeEmail.newEmail2.$error.match">Los correos no coinciden</span>
+								</div>
+							</div>
+							<input type="submit" value="Cambiar correo" ng-click="changeMyEmail()" class="btn btn-lg btn-success btn-block" ng-disabled="changeEmail.$invalid">
+						</fieldset>
+					</form>
+					<div class="well" ng-show="changeEmail.$submitted">
+						<span ng-class="{'text-success' : !errors, 'text-danger' : errors }">{{message}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer"></div>
+	</div>
+</div>

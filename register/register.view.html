@@ -1,0 +1,72 @@
+<div class="col-md-4 col-md-offset-4">
+	<div class="login-panel panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Registro</h3>
+		</div>
+		<div class="panel-body">
+			<form role="form" name="register">
+				<fieldset>
+					<div class="form-group" ng-class="{'has-error': register.username.$invalid, 'has-success': register.username.$valid}">
+						<label for="username">Nombre de usuario</label>
+						<input class="form-control" placeholder="Nombre Usuario" name="username" type="text" autofocus ng-model="user.username" ng-minlength="5" required>
+						<div ng-show="register.username.$dirty && register.username.$invalid">
+							<p class="help-block text-danger" ng-show="register.username.$error.required">Campo obligatorio</p>
+							<p class="help-block text-danger" ng-show="register.username.$error.minlength">Mínimo de 5 caracteres</p>
+						</div>
+					</div>
+					<div class="form-group" ng-class="{'has-error': register.email1.$invalid, 'has-success': register.email1.$valid}">
+						<label for="email1">Correo</label>
+						<input class="form-control" placeholder="E-mail" name="email1" type="email" autofocus ng-model="user.email1" required>
+						<div ng-show="register.email1.$dirty && register.email1.$invalid">
+							<p class="help-block text-danger" ng-show="register.email1.$error.required">Campo obligatorio</p>
+							<p class="help-block text-danger" ng-show="register.email1.$error.email">Email invalido</p>
+						</div>
+					</div>
+					<div class="form-group" ng-class="{'has-error': register.email2.$invalid, 'has-success': register.email2.$valid}">
+						<label for="email2">Repetir Correo</label>
+						<input class="form-control" placeholder="Repetir E-mail" name="email2" type="email" autofocus ng-model="user.email2" match="user.email1" required>
+						<div ng-show="register.email2.$dirty && register.email2.$invalid && register.email2.$error.match">
+							<p class="help-block text-danger" ng-show="register.email2.$error.required">Campo obligatorio</p>
+							<p class="help-block text-danger" ng-show="register.email2.$error.email">Email invalido</p>
+							<p class="help-block text-danger" ng-show="register.email2.$error.match">Los correos no coinciden</p>
+						</div>
+					</div>
+					<div class="form-group" ng-class="{'has-error': register.password1.$invalid, 'has-success': register.password1.$valid}">
+						<label for="password1">Contraseña</label>
+						<input class="form-control" placeholder="Contraseña" name="password1" type="password" value="" ng-model="user.password1" ng-minlength="5" required>
+						<div ng-show="register.password1.$dirty && register.password1.$invalid">
+							<p class="help-block text-danger" ng-show="register.password1.$error.required">Campo obligatorio</p>
+							<p class="help-block text-danger" ng-show="register.password1.$error.minlength">Mínimo de 5 caracteres</p>
+						</div>
+					</div>
+					<div class="form-group" ng-class="{'has-error': register.password2.$invalid, 'has-success': register.password2.$valid}">
+						<label for="password2">Repetir Contraseña</label>
+						<input class="form-control" placeholder="Repetir Contraseña" name="password2" type="password" value="" ng-model="user.password2" match="user.password1" required>
+						<div ng-show="register.password2.$dirty && register.password2.$invalid && register.password2.$error.match">
+							<p class="help-block text-danger" ng-show="register.password2.$error.required">Campo obligatorio</p>
+							<p class="help-block text-danger" ng-show="register.password2.$error.match">Las contraseñas no coinciden</p>
+						</div>
+					</div>
+					<div class="checkbox" ng-class="{'has-error': register.acceptConditions.$invalid, 'has-success': register.acceptConditions.$valid}">
+						<label>
+							<input name="acceptConditions" type="checkbox" value="acceptConditions" ng-model="user.acceptConditions" required>Aceptar Condiciones
+						</label>
+						<div ng-show="register.acceptConditions.$invalid">
+							<p class="help-block text-danger" ng-show="register.acceptConditions.$error.required">Tienes que aceptar las condiciones</p>
+						</div>
+						<a href="#/">Cancelar</a>
+					</div>
+
+					<!-- Change this to a button or input when using this as a form -->
+					<input type="submit" value="Registrarse" ng-click="userRegister()" class="btn btn-lg btn-success btn-block" ng-disabled="register.$invalid">
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="well col-md-4 col-md-offset-4" ng-show="register.$submitted">
+	<span ng-class="{'text-danger': errors, 'text-success': !errors }">{{message}} 
+		<a ng-show="!errors" href="#/">Entra ahora. </a>
+	</span>
+</div>
+

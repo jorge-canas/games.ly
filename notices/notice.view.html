@@ -1,0 +1,23 @@
+<div class="col-md-12" ng-init="getNotice(0)">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h1>{{notice.title}}</h1>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="container-fluid col-md-12">
+					<img ng-src="../img/notices/{{notice.noticeIMG}}" alt="{{notice.title}}" />
+					<br />
+					<br />
+					<p>
+						{{notice.noticeBody}}
+					</p>
+					<div>
+						<a href="{{notice.source}}">{{notice.source}}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer"></div>
+	</div>
+</div>
